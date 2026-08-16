@@ -19,7 +19,6 @@ keywords:
   - degenerate dispersion
   - traveling wave
 repository-code: "https://github.com/FrancisRVillatoro/edge-cusped-weak-compactons"
-doi: "10.5281/zenodo.XXXXXXXX"
 preferred-citation:
   type: article
   title: "Edge-cusped weak compactons in degenerate nonlinear dispersive equations"
