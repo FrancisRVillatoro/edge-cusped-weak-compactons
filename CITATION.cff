@@ -4,6 +4,7 @@ title: "Reproducibility code for \"Edge-cusped weak compactons in degenerate non
 abstract: "Python code that regenerates every figure, table, and numerical constant of the manuscript on edge-cusped weak compactons of the equation (1/m)(u^m)_t + alpha (u^n)_x + beta [u^a (u^b)_xx]_x = 0."
 version: 1.0.0
 date-released: 2026-08-16
+doi: "10.5281/zenodo.21970591"
 license: MIT
 type: software
 authors:
