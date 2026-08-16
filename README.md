@@ -75,4 +75,3 @@ See `CITATION.cff`, or cite the archived release:
 
 > F. R. Villatoro, *Reproducibility code for "Edge-cusped weak compactons in
 > degenerate nonlinear dispersive equations"*, Zenodo, 2026.
-> doi:10.5281/zenodo.XXXXXXXX
