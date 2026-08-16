@@ -2,6 +2,9 @@
 
 Reproducibility code for the manuscript
 
+**Zenodo DOI (all versions):** https://doi.org/10.5281/zenodo.21970590  
+**Archived release v1.0.0:** https://doi.org/10.5281/zenodo.21970591
+
 > F. R. Villatoro, *Edge-cusped weak compactons in degenerate nonlinear dispersive equations*, submitted to **Studies in Applied Mathematics** (2026).
 
 The paper classifies one-hump nonnegative weak compactons of
@@ -71,7 +74,16 @@ paper.
 
 ## Citation
 
-See `CITATION.cff`, or cite the archived release:
+For the repository as a whole, cite the concept DOI:
 
 > F. R. Villatoro, *Reproducibility code for "Edge-cusped weak compactons in
-> degenerate nonlinear dispersive equations"*, Zenodo, 2026.
+> degenerate nonlinear dispersive equations"*, Zenodo.  
+> https://doi.org/10.5281/zenodo.21970590
+
+For the exact software version used for the manuscript, cite:
+
+> F. R. Villatoro, *Reproducibility code for "Edge-cusped weak compactons in
+> degenerate nonlinear dispersive equations"*, version 1.0.0, Zenodo, 2026.  
+> https://doi.org/10.5281/zenodo.21970591
+
+See also `CITATION.cff`.
