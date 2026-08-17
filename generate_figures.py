@@ -29,10 +29,10 @@ def save(fig, stem, dpi=260):
 # Figure 1: universal edge-regime diagram for the E=0 branch.
 # s = a+b-p, p=min(m,n).
 # ----------------------------------------------------------------------
-b = np.linspace(0.2, 3.0, 600)
+b = np.linspace(0.0, 3.0, 600)
 fig = plt.figure(figsize=(8.2, 5.7))
 ax = fig.add_subplot(111)
-ax.fill_between(b, -2.0, 0.0, alpha=0.18, label="Algebraic tail ($E=0$)")
+ax.fill_between(b, -1.0, 0.0, alpha=0.18, label="Algebraic tail ($E=0$)")
 ax.fill_between(
     b, 0.0, np.minimum(2.0, 2*b), alpha=0.18,
     label="Noncusped compact edge ($E=0$)"
@@ -40,12 +40,12 @@ ax.fill_between(
 mask = 2*b > 2.0
 ax.fill_between(b[mask], 2.0, 2*b[mask], alpha=0.18,
                 label="Cusp compacton ($E=0$)")
-ax.fill_between(b, 2*b, 6.4, alpha=0.18, label="Critical/supersingular")
+ax.fill_between(b, 2*b, 6.0, alpha=0.18, label="Critical/supersingular")
 ax.plot(b, np.zeros_like(b), label=r"$s=0$ (exponential-tail threshold)")
 ax.plot(b, np.full_like(b, 2.0), label=r"$s=2$ (linear-edge threshold)")
 ax.plot(b, 2*b, label=r"$s=2b$ (critical $a=p+b$)")
-ax.set_xlim(0.2, 3.0)
-ax.set_ylim(-1.6, 6.2)
+ax.set_xlim(0.0, 3.0)
+ax.set_ylim(-1.0, 6.0)
 ax.set_xlabel(r"$b$")
 ax.set_ylabel(r"$s=a+b-p$")
 ax.set_title(r"Universal edge-regime diagram for the $E=0$ branch")
@@ -67,15 +67,28 @@ profiles = [
      r"$r^{1/2}\log(e/r)^{1/4}$: critical"),
     (r**0.4, r"$r^{2/5}$: supersingular"),
 ]
-fig = plt.figure(figsize=(8.0, 5.5))
-ax = fig.add_subplot(111)
+fig, (axa, axb) = plt.subplots(1, 2, figsize=(11.2, 4.8))
 for y, label in profiles:
-    ax.plot(r, y / y[-1], label=label)
-ax.set_xlabel(r"distance to the edge $r=L-|\xi|$")
-ax.set_ylabel(r"normalized local profile $U(r)/U(1)$")
-ax.set_title("Representative edge regularities")
-ax.legend(fontsize=8.7)
-ax.grid(True, alpha=0.25)
+    axa.plot(r, y / y[-1], label=label)
+    axb.loglog(r, y / y[-1], label=label)
+# Exterior of the support, drawn once for all laws.
+axa.plot([-0.2, 0.0], [0.0, 0.0], color="0.25", linewidth=1.4)
+axa.axvline(0.0, color="0.25", linewidth=0.9, linestyle=":")
+axa.annotate("free boundary", xy=(0.0, 0.03), xytext=(0.22, 0.07),
+             fontsize=9, color="0.25",
+             arrowprops=dict(arrowstyle="->", lw=0.8, color="0.25"))
+axa.set_xlim(-0.2, 1.0)
+axa.set_ylim(-0.05, 1.12)
+axa.set_xlabel(r"distance to the edge $r=L-|\xi|$")
+axa.set_ylabel(r"normalized local profile $U(r)/U(r_*)$")
+axa.set_title("Representative edge regularities")
+axa.legend(fontsize=8.2, loc="upper left")
+axa.grid(True, alpha=0.25)
+axb.set_xlim(1e-3, 1.0)
+axb.set_xlabel(r"$r$")
+axb.set_ylabel(r"$U(r)/U(r_*)$")
+axb.set_title(r"Same laws in log-log: slope $=\gamma$")
+axb.grid(True, which="both", alpha=0.25)
 save(fig, "fig02_edge_asymptotic_regimes")
 
 
@@ -117,7 +130,7 @@ def kinetic_profile(A, x):
 # Figure 3: kinetic cusp family.
 As = [0.4, 0.8, 1.2, 1.6, 1.9]
 Ls = [solve_kinetic(A)[1] for A in As]
-x = np.linspace(-1.03*max(Ls), 1.03*max(Ls), 3200)
+x = np.linspace(-9.0, 9.0, 3600)
 fig = plt.figure(figsize=(8.2, 5.4))
 ax = fig.add_subplot(111)
 for A in As:
@@ -125,6 +138,7 @@ for A in As:
     ax.plot(x, U, label=rf"$A={A:.1f}$")
 ax.set_xlabel(r"$\xi$")
 ax.set_ylabel(r"$U(\xi)$")
+ax.set_xlim(-9.0, 9.0)
 ax.set_title(r"Nonzero-energy cusp compactons: $m=2,n=1,a=1,b=2$, $0<A<2$")
 ax.legend()
 ax.grid(True, alpha=0.25)
@@ -142,7 +156,8 @@ ax.axhline(0.0)
 ax.set_xlabel(r"$W=U^2$")
 ax.set_ylabel(r"$F_E(W)=(W')^2$")
 ax.set_title("Turning-point geometry: compacton / critical front / no compacton")
-ax.set_ylim(-1.2, 5.2)
+ax.set_xlim(0.0, 7.0)
+ax.set_ylim(-2.0, 3.5)
 ax.legend()
 ax.grid(True, alpha=0.25)
 save(fig, "fig05_energy_geometry_transition")
@@ -153,15 +168,21 @@ fig = plt.figure(figsize=(8.2, 5.2))
 ax = fig.add_subplot(111)
 for A in [1.6, 1.8, 1.9, 1.95, 1.98]:
     sol, L = solve_kinetic(A, max_step=0.006)
-    s = np.linspace(0.0, L, 1400)
-    xi = -L + s
-    U = np.sqrt(np.maximum(sol.sol(np.abs(xi))[0], 0.0))
-    ax.plot(s, U, label=rf"$A={A:.2f}$")
-ax.axhline(2.0)
-ax.set_xlabel(r"distance from the compact edge $s$")
+    s_half = np.linspace(0.0, L, 1400)
+    U_half = np.sqrt(np.maximum(sol.sol(L - s_half)[0], 0.0))
+    s_full = np.concatenate((s_half, 2*L - s_half[-2::-1]))
+    U_full = np.concatenate((U_half, U_half[-2::-1]))
+    s_plot = np.concatenate(([-1.0, 0.0], s_full, [2*L, 27.0]))
+    U_plot = np.concatenate(([0.0, 0.0], U_full, [0.0, 0.0]))
+    ax.plot(s_plot, U_plot, label=rf"$A={A:.2f}$")
+ax.axhline(2.0, color="0.35", linewidth=0.9, linestyle="--")
+ax.text(24.0, 2.03, r"$U=2$", fontsize=9, color="0.35")
+ax.set_xlim(-1.0, 27.0)
+ax.set_ylim(0.0, 2.2)
+ax.set_xlabel(r"distance from the left compact edge $s$")
 ax.set_ylabel(r"$U$")
 ax.set_title(r"Critical broadening as $A\to2^-$")
-ax.legend()
+ax.legend(loc="lower right")
 ax.grid(True, alpha=0.25)
 save(fig, "fig06_critical_broadening_profiles")
 
@@ -177,7 +198,7 @@ L_exact = 4*np.pi
 xi_right = L_exact - rhalf
 xi_full = np.concatenate((-xi_right[::-1], xi_right[1:]))
 U_full = np.concatenate((Uhalf[::-1], Uhalf[1:]))
-xext = np.linspace(-1.12*L_exact, 1.12*L_exact, 3000)
+xext = np.linspace(-15.0, 15.0, 3200)
 order = np.argsort(xi_full)
 Uext = np.interp(xext, xi_full[order], U_full[order], left=0.0, right=0.0)
 fig = plt.figure(figsize=(8.2, 5.2))
@@ -185,6 +206,7 @@ ax = fig.add_subplot(111)
 ax.plot(xext, Uext)
 ax.set_xlabel(r"$\xi$")
 ax.set_ylabel(r"$U(\xi)$")
+ax.set_xlim(-15.0, 15.0)
 ax.set_title(r"Exact balanced cusp compacton: $U\sim(3r/2)^{2/3}$, $L=4\pi$")
 ax.grid(True, alpha=0.25)
 save(fig, "fig04_exact_balanced_cusp_compacton")
@@ -319,13 +341,14 @@ print("Critical example semiwidth L =", repr(Lcrit))
 
 # Figure: critical profile and its logarithmically corrected edge law.
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.0, 4.6))
-xx = np.linspace(-1.15*Lcrit, 1.15*Lcrit, 4001)
+xx = np.linspace(-2.0, 2.0, 4001)
 ax1.plot(xx, np.sqrt(Wcrit(xx)))
 ax1.set_xlabel(r"$\xi$")
 ax1.set_ylabel(r"$U(\xi)$")
-ax1.set_title(r"Critical compacton: $m=2,n=1,a=3,b=2$, $E=-1$")
+ax1.set_xlim(-2.0, 2.0)
+ax1.set_title(r"Regularity-threshold compacton: $a=3$, $b=2$, $E=-1$")
 ax1.grid(True, alpha=0.25)
-rr = np.logspace(-8, -0.5, 400)
+rr = np.logspace(-9, -2, 600)
 Wr = Wcrit(Lcrit - rr)
 ax2.semilogx(rr, Wr/(np.sqrt(2)*rr*np.sqrt(np.log(1/Wr))),
              label=r"$W/[\sqrt{2}\,r\sqrt{\log(1/W)}]$")
@@ -334,6 +357,8 @@ ax2.semilogx(rr, Wr/(np.sqrt(2)*rr*np.sqrt(np.log(1/rr))),
 ax2.axhline(1.0, color="k", linewidth=0.8)
 ax2.set_xlabel(r"distance to the edge $r$")
 ax2.set_ylabel("ratio")
+ax2.set_xlim(1e-9, 1e-2)
+ax2.set_ylim(0.86, 1.02)
 ax2.set_title("Logarithmically corrected edge law")
 ax2.legend(fontsize=9)
 ax2.grid(True, which="both", alpha=0.25)

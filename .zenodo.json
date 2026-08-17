@@ -3,7 +3,7 @@
   "description": "<p>Python code that regenerates every figure, table, and numerical constant of the manuscript <em>Edge-cusped weak compactons in degenerate nonlinear dispersive equations</em> (F. R. Villatoro, submitted to Studies in Applied Mathematics, 2026).</p><p><code>generate_figures.py</code> produces all figures and the residual and width data; <code>verify_claims.py</code> recomputes the closed-form constants of the paper to 30 digits with mpmath, by quadrature routes independent of the ODE integrator.</p>",
   "upload_type": "software",
   "license": "MIT",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "language": "eng",
   "creators": [
     {
